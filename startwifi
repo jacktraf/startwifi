@@ -1,5 +1,6 @@
 #!/bin/zsh
-Usage="""Usage:	startwifi [SSID] [PASSWORD]
+INVALID_NUM_OF_ARGS="Error: Invalid number of arguments"
+USAGE="""Usage: $0 [SSID] [PASSWORD]
 	      - You're going to have to run as root for dhcpcd to work
 
 Installation: Put this script in /usr/bin
@@ -7,8 +8,12 @@ Installation: Put this script in /usr/bin
 Notes:        - 'wlp7s0'  happens to be my network interface name, if your's differs change it accordingly
               - 'n180211' happens to be my network driver,         if your's differs change it accordingly
 """
-if [ "$#" -ne 2 ]; then
-	echo "$Usage" >&2
+# $# refers to the number of arguments passed
+# -ne means not equal
+# >&2 means redirect to stderr
+if [ $# -ne 2 ]; then
+	echo "$INVALID_NUM_OF_ARGS" >&2
+	echo "$USAGE"
 	exit 1
 fi
 wpa_supplicant -D n180211,wext -i wlp7s0 -c <(wpa_passphrase "$1" "$2") -B
