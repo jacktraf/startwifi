@@ -1,0 +1,15 @@
+#!/bin/zsh
+Usage="""Usage:	startwifi [SSID] [PASSWORD]
+	      - You're going to have to run as root for dhcpcd to work
+
+Installation: Put this script in /usr/bin
+
+Notes:        - 'wlp7s0'  happens to be my network interface name, if your's differs change it accordingly
+              - 'n180211' happens to be my network driver,         if your's differs change it accordingly
+"""
+if [ "$#" -ne 2 ]; then
+	echo "$Usage" >&2
+	exit 1
+fi
+wpa_supplicant -D n180211,wext -i wlp7s0 -c <(wpa_passphrase "$1" "$2") -B
+dhcpcd wlp7s0
