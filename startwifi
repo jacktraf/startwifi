@@ -1,6 +1,7 @@
-#!/bin/zsh
+#!/bin/bash
 declare -r INVALID_NUM_OF_ARGS="Error: Invalid number of arguments"
-declare -r USAGE="""Usage: $0 [SSID] [PASSWORD]
+declare -r USAGE="""Usage: $0 [SSID]
+				- SSID is the wireless network you are trying to connect to
 	      - You're going to have to run as root for dhcpcd to work
 
 Installation: Put this script in /usr/bin
@@ -12,10 +13,13 @@ Notes:        - 'wlp7s0'  happens to be my network interface name, if your's dif
 # $# refers to the number of arguments passed
 # -ne means not equal
 # >&2 means redirect to stderr
-if [ $# -ne 2 ]; then
+#
+if [ $# -ne 1 ]; then
 	echo "$INVALID_NUM_OF_ARGS" >&2
 	echo "$USAGE"
 	exit 1
 fi
-wpa_supplicant -D n180211,wext -i wlp7s0 -c <(wpa_passphrase "$1" "$2") -B
+SSID=$1 # SSID is set to the value of the first command line argument of this script
+read -sp "Enter the network password for network \"$SSID\".  "               PASSWORD # prompt user for password '-p', do not show password in terminal '-s'
+wpa_supplicant -D n180211,wext -i wlp7s0 -c <(wpa_passphrase "$SSID" "$PASSWORD") -B
 dhcpcd wlp7s0
