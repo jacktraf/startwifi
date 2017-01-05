@@ -1,0 +1,7 @@
+STARTWIFI NOTES:
+  - I want to make it more secure.  As of right now your network pass is in your bash history
+  - I should let your network name/pass be saved hashed in a text file so if you call startwifi with no arguments you can just connect to the wifi without having to retype your SSID and password everytime
+  - Maybe add optional arguments for driver type, etc.
+  - Maybe add options for other authentication methods
+  - Add a more detailed and reusable error function
+
